@@ -27,5 +27,38 @@ app.post('/api/users', (req, res) => {
   }
 });
 
+//Handling GET Requests
+app.get('/api/users', (req, res) => {
+  data.find()
+    .then(users => {
+      res.status(200).json(users);
+    })
+    .catch(() => {
+      res.status(500).json({
+        errorMessage: 'The users information could not be retrieved.',
+      });
+    });
+});
+
+app.get('/api/users/:id', (req, res) => {
+  data.findById(req.params.id)
+    .then(user => {
+      if (user) {
+        res.status(200).json(user);
+      } else {
+        res
+          .status(404)
+          .json({ message: 'The user with the specified ID does not exist.' });
+      }
+    })
+    .catch(() => {
+      res
+        .status(500)
+        .json({ errorMessage: 'The user information could not be retrieved.' });
+    });
+});
+
+
+
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Listening on port ${port}`))
